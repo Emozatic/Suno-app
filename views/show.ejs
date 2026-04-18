@@ -6,11 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Home route</h1>
-        <%for(let song of songListing){%>
-            <ul>
-                <li><a href="/show/<%=song._id%>"><%=song.title%></a></li>
-            </ul>
-        <%}%>
+    <h1>Show Rote</h1>
+    <img src="<%= songDetails.thumbnail %>" alt="song Thumbnail">
+    <p><%=songDetails.title%></p>
+    <p><%=songDetails.description%></p>
+    <p><%=songDetails.song%></p>
 </body>
 </html>

@@ -51,6 +51,13 @@ app.post("/home",async(req,res)=>{
     res.redirect("/home");
 })
 
+//show route
+app.get("/show/:id",async(req,res)=>{
+    let{id}=req.params;
+    let songDetails= await SongListing.findById(id);
+    res.render("show.ejs",{songDetails});
+})
+
 app.listen(8000,()=>{
     console.log("app is listening at port 8000");
 })
