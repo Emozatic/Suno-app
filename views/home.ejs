@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Home route</h1>
+    <form action="/show" method="GET">
+        <%for(let song of songListing){%>
+            <ul>
+                <li><a href="<%=song.title%>"><%=song.title%></a></li>
+            </ul>
+        <%}%>
+    </form>
+</body>
+</html>
