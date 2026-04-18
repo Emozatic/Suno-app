@@ -10,11 +10,11 @@
     <img src="<%= songDetails.thumbnail %>" alt="song Thumbnail">
     <p><%=songDetails.title%></p>
     <p><%=songDetails.description%></p>
-    <p><%=songDetails.song%></p>
+    <audio src="<%=songDetails.song%>" controls></audio>
     <form action="/show/<%=songDetails._id%>/edit" method="GET">
     <button>Edit</button>
     </form>
-    <form action="/show/<%=songDetails._id%>?_method="DELETE" method="POST">
+    <form action="/show/<%=songDetails._id%>?_method=DELETE" method="POST">
         <button>DELETE</button></form>
 </body>
 </html>

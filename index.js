@@ -72,6 +72,14 @@ app.put("/show/:id",async(req,res)=>{
     res.redirect(`/show/${id}`);
 })
 
+//delete route
+app.delete("/show/:id",async(req,res)=>{
+    let {id}= req.params;
+    await SongListing.findByIdAndDelete(id);
+    res.redirect("/home");
+});
+
+
 app.listen(8000,()=>{
     console.log("app is listening at port 8000");
 })

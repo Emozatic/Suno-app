@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>Home route</h1>
+    <form action="/new" method="GET"><button>Add new Song</button></form>
         <%for(let song of songListing){%>
             <ul>
                 <li><a href="/show/<%=song._id%>"><%=song.title%></a></li>
