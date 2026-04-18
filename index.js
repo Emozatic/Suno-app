@@ -58,6 +58,20 @@ app.get("/show/:id",async(req,res)=>{
     res.render("show.ejs",{songDetails});
 })
 
+//render edit form
+app.get("/show/:id/edit",async (req,res)=>{
+    let{id}=req.params;
+    let songDetails= await SongListing.findById(id);
+    res.render("edit.ejs",{songDetails});
+})
+
+//post edit form
+app.put("/show/:id",async(req,res)=>{
+    let {id}= req.params;
+    await SongListing.findByIdAndUpdate(id,{...req.body});
+    res.redirect(`/show/${id}`);
+})
+
 app.listen(8000,()=>{
     console.log("app is listening at port 8000");
 })
