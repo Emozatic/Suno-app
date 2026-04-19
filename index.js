@@ -92,7 +92,7 @@ app.delete("/show/:id",wrapAsync(async(req,res)=>{
 app.use((err,req,res,next)=>{
     console.log("-----ERROR-----");
     let{status=500, message="NOT FOUND"}=err;
-    res.status(status).send(message);
+    res.render("error.ejs",{err});
 })
 
 
