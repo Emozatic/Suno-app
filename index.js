@@ -5,6 +5,7 @@ const path= require("path");
 const methodOverride= require("method-override");
 const ejsMate= require("ejs-mate");
 const SongListing= require("./model/song");
+const ExpressError= require("./ExpressError");
 
 
 //db connect
@@ -26,58 +27,66 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
-//test route
-app.get("/test",(req,res)=>{
-    
-})
+
+
+//wrapAsync for async errors
+function wrapAsync (fn){
+    return function(req,res,next){
+        fn(req,res,next).catch((err)=>next(err));
+    }
+}
+
+
+
 
 //index.route
-app.get("/home",async(req,res)=>{
+app.get("/home",wrapAsync(async(req,res)=>{
     let songListing= await SongListing.find({});
     console.log(songListing);
     res.render("home.ejs",{songListing});
-})
+}))
 
 //render new form
-app.get("/new",async(req,res)=>{
+app.get("/new",wrapAsync(async(req,res)=>{
     res.render("new.ejs");
-})
+}))
 
 //post new form
-app.post("/home",async(req,res)=>{
+app.post("/home",wrapAsync(async(req,res)=>{
     let newData=req.body;
     let newSongListing = new SongListing(newData);
     await newSongListing.save()
     res.redirect("/home");
-})
+}))
 
 //show route
-app.get("/show/:id",async(req,res)=>{
+app.get("/show/:id",wrapAsync(async(req,res)=>{
     let{id}=req.params;
     let songDetails= await SongListing.findById(id);
     res.render("show.ejs",{songDetails});
-})
+}))
 
 //render edit form
-app.get("/show/:id/edit",async (req,res)=>{
+app.get("/show/:id/edit",wrapAsync(async (req,res)=>{
     let{id}=req.params;
     let songDetails= await SongListing.findById(id);
     res.render("edit.ejs",{songDetails});
-})
+}))
 
 //post edit form
-app.put("/show/:id",async(req,res)=>{
+app.put("/show/:id",wrapAsync(async(req,res)=>{
     let {id}= req.params;
     await SongListing.findByIdAndUpdate(id,{...req.body});
     res.redirect(`/show/${id}`);
-})
+}))
 
 //delete route
-app.delete("/show/:id",async(req,res)=>{
+app.delete("/show/:id",wrapAsync(async(req,res)=>{
     let {id}= req.params;
     await SongListing.findByIdAndDelete(id);
     res.redirect("/home");
-});
+}));
+
 
 //error handling middleware
 app.use((err,req,res,next)=>{
