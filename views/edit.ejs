@@ -1,9 +1,34 @@
 <% layout("/layouts/boilerplate") %>
     <h1>Edit Route</h1>
-    <form action="/show/<%=songDetails._id%>?_method=PUT" method="POST">
-    <input type="text" name="title" value="<%=songDetails.title%>">
-    <input type="text" name="description" value="<%=songDetails.description%>">
-    <input type="text" name="thumbnail" value="<%=songDetails.thumbnail%>">
-    <input type="text" name="song" value="<%=songDetails.song%>">
-    <button>Edit</button>
+    <form action="/show/<%=songDetails._id%>?_method=PUT" method="POST" novalidate class="needs-validation">
+        
+        <div>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" value="<%=songDetails.title%>" required>
+        <div class="invalid-feedback">Add a title</div>
+        <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <div>
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description" value="<%=songDetails.description%>" required>
+        <div class="invalid-feedback">Add a description</div>
+        <div class="valid-feedback">Looks good!</div>
+        </div>
+        
+        <div>
+        <label for="thumbnail">Thumbnail</label>
+        <input type="text" id="thumbnail" name="thumbnail" value="<%=songDetails.thumbnail%>" required>
+        <div class="invalid-feedback">Add a thumbnail</div>
+        <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <div>
+        <label for="song">Song</label>
+        <input type="text" id="song" name="song" value="<%=songDetails.song%>" required>
+        <div class="invalid-feedback">Add a song</div>
+        <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <button>Edit</button>
     </form>
