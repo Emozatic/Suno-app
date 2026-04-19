@@ -6,6 +6,7 @@ const methodOverride= require("method-override");
 const ejsMate= require("ejs-mate");
 const SongListing= require("./model/song");
 const ExpressError= require("./ExpressError");
+const {songSchema}= require("./schema");
 
 
 //db connect
@@ -27,6 +28,15 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
+//joi middleware
+const validateSong= (req,res,next)=>{
+    let{err}= songSchema.validate(req.body);
+    if(err){
+        let msg= err.details.map(el=>el.message).join(",");
+        throw new ExpressError(400,msg);
+    }
+    next();
+};
 
 
 //wrapAsync for async errors
@@ -52,7 +62,7 @@ app.get("/new",wrapAsync(async(req,res)=>{
 }))
 
 //post new form
-app.post("/home",wrapAsync(async(req,res)=>{
+app.post("/home",validateSong,wrapAsync(async(req,res)=>{
     let newData=req.body;
     let newSongListing = new SongListing(newData);
     await newSongListing.save()
@@ -74,7 +84,7 @@ app.get("/show/:id/edit",wrapAsync(async (req,res)=>{
 }))
 
 //post edit form
-app.put("/show/:id",wrapAsync(async(req,res)=>{
+app.put("/show/:id",validateSong,wrapAsync(async(req,res)=>{
     let {id}= req.params;
     await SongListing.findByIdAndUpdate(id,{...req.body});
     res.redirect(`/show/${id}`);
