@@ -79,6 +79,13 @@ app.delete("/show/:id",async(req,res)=>{
     res.redirect("/home");
 });
 
+//error handling middleware
+app.use((err,req,res,next)=>{
+    console.log("-----ERROR-----");
+    let{status=500, message="NOT FOUND"}=err;
+    res.status(status).send(message);
+})
+
 
 app.listen(8000,()=>{
     console.log("app is listening at port 8000");
