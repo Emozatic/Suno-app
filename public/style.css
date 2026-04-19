@@ -14,3 +14,266 @@ body {
 footer {
     flex-shrink: 0;
 }
+
+body {
+    background: radial-gradient(circle at top left, #ffd2e8 0%, rgba(255, 210, 232, 0.85) 20%, #150912 70%);
+    color: #fff;
+    min-height: 100vh;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+body.page-enter {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+body.page-exit {
+    opacity: 0;
+    transform: translateY(24px);
+}
+
+.edit-form {
+    position: relative;
+}
+
+.submit-burst {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.burst-note {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff9bd9, #ffd2f2);
+    box-shadow: 0 0 18px rgba(255, 157, 216, 0.65);
+    opacity: 0;
+    transform: translate(0, 0) scale(0.8);
+}
+
+.submit-burst.animate .burst-note {
+    animation: burst-note 1s ease forwards;
+}
+
+.burst-note-1 { left: 30%; top: 50%; }
+.burst-note-2 { left: 45%; top: 45%; }
+.burst-note-3 { left: 60%; top: 52%; }
+.burst-note-4 { left: 25%; top: 62%; }
+.burst-note-5 { left: 72%; top: 40%; }
+.burst-note-6 { left: 80%; top: 58%; }
+.burst-note-7 { left: 50%; top: 70%; }
+.burst-note-8 { left: 15%; top: 42%; }
+
+@keyframes burst-note {
+    0% {
+        opacity: 0.9;
+        transform: translate(0, 0) scale(0.8);
+    }
+    30% {
+        opacity: 1;
+        transform: translate(0, -20px) scale(1.05);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--dx, 0), var(--dy, -70px)) scale(1.2);
+    }
+}
+
+.page-shell {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+}
+
+.edit-card {
+    width: min(620px, 100%);
+    border-radius: 30px;
+    background: rgba(20, 7, 20, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 28px 80px rgba(7, 0, 10, 0.45);
+    overflow: hidden;
+    position: relative;
+}
+
+.music-head {
+    position: relative;
+    padding: 2rem 2rem 1.6rem;
+    background: linear-gradient(180deg, rgba(255, 196, 221, 0.22), transparent 82%);
+    overflow: hidden;
+}
+
+.music-title h1 {
+    margin: 0 0 0.4rem;
+    font-size: clamp(2rem, 2.7vw, 2.5rem);
+    letter-spacing: 0.05em;
+}
+
+.music-title p {
+    margin: 0;
+    color: #f3d1e1;
+    opacity: 0.9;
+}
+
+.music-animation {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.note {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ff8ec4;
+    box-shadow: 0 0 20px rgba(255, 142, 196, 0.6);
+    opacity: 0.85;
+    animation: floatNote 3s ease-in-out infinite;
+}
+
+.note::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%);
+}
+
+.note-1 { left: 18%; top: 40%; animation-duration: 3.2s; animation-delay: 0s; }
+.note-2 { left: 35%; top: 28%; animation-duration: 2.8s; animation-delay: 0.3s; }
+.note-3 { left: 55%; top: 36%; animation-duration: 3.6s; animation-delay: 0.5s; }
+.note-4 { left: 72%; top: 22%; animation-duration: 3.1s; animation-delay: 0.2s; }
+.note-5 { left: 82%; top: 44%; animation-duration: 2.9s; animation-delay: 0.7s; }
+
+@keyframes floatNote {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
+    50% { transform: translateY(-18px) scale(1.1); opacity: 1; }
+}
+
+.edit-form {
+    padding: 1.8rem 2rem 2rem;
+}
+
+.home-card .edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.home-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.song-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.song-card {
+    display: block;
+    border-radius: 22px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.song-card:hover {
+    transform: translateY(-5px);
+    border-color: #ff90ca;
+    box-shadow: 0 18px 40px rgba(255, 106, 188, 0.22);
+}
+
+.song-thumbnail {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}
+
+.song-info {
+    padding: 1rem 1rem 1.2rem;
+}
+
+.song-info h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #fff;
+}
+
+.error-card .edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.8rem 2rem 2rem;
+}
+
+.error-text {
+    margin: 0;
+    color: #ffccd9;
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.error-card .btn {
+    align-self: flex-start;
+}
+
+.input-group-custom {
+    position: relative;
+}
+
+.form-label {
+    color: #f8d3ea;
+    font-weight: 500;
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #fff;
+    border-radius: 16px;
+    padding: 1rem 1rem;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #ff90ca;
+    box-shadow: 0 0 0 0.2rem rgba(255, 144, 202, 0.22);
+    color: #fff;
+}
+
+.invalid-feedback {
+    color: #ffa3d6;
+}
+
+.btn-dark {
+    background: #12030c;
+    border-color: #ff80c6;
+    color: #fff;
+    width: 100%;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+    background: #ff80c6;
+    color: #12030c;
+    border-color: #ff80c6;
+}
+
+@media (max-width: 576px) {
+    .edit-card {
+        border-radius: 24px;
+    }
+    .music-head {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+}

@@ -1,8 +1,29 @@
 <% layout("/layouts/boilerplate") %>
-    <h1>Home route</h1>
-    <form action="/new" method="GET"><button>Add new Song</button></form>
-        <%for(let song of songListing){%>
-            <ul>
-                <li><a href="/show/<%=song._id%>"><%=song.title%></a></li>
-            </ul>
-        <%}%>
+<div class="page-shell">
+  <div class="edit-card home-card">
+    <div class="music-head">
+      
+      <div class="music-animation" aria-hidden="true">
+        <span class="note note-1"></span>
+        <span class="note note-2"></span>
+        <span class="note note-3"></span>
+        <span class="note note-4"></span>
+      </div>
+    </div>
+    <div class="edit-form home-listing">
+      <div class="home-actions">
+        <a href="/new" class="btn btn-dark btn-lg">Add New Track</a>
+      </div>
+      <div class="song-grid">
+        <% for (let song of songListing) { %>
+          <a href="/show/<%= song._id %>" class="song-card">
+            <img src="<%= song.thumbnail %>" alt="<%= song.title %> thumbnail" class="song-thumbnail">
+            <div class="song-info">
+              <h2><%= song.title %></h2>
+            </div>
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>

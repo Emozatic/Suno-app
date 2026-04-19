@@ -1,34 +1,45 @@
 <% layout("/layouts/boilerplate") %>
-    <h1>Edit Route</h1>
-    <form action="/show/<%=songDetails._id%>?_method=PUT" method="POST" novalidate class="needs-validation">
-        
-        <div>
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title" value="<%=songDetails.title%>" required>
-        <div class="invalid-feedback">Add a title</div>
-        <div class="valid-feedback">Looks good!</div>
+<div class="page-shell">
+    <div class="edit-card">
+        <div class="music-head">
+            <div class="music-title">
+                <h1>Edit Track</h1>
+                <p>Give your song a fresh beat with a dreamy pink and black vibe.</p>
+            </div>
+            <div class="music-animation" aria-hidden="true">
+                <span class="note note-1"></span>
+                <span class="note note-2"></span>
+                <span class="note note-3"></span>
+                <span class="note note-4"></span>
+                <span class="note note-5"></span>
+            </div>
         </div>
+        <form action="/show/<%=songDetails._id%>?_method=PUT" method="POST" novalidate class="needs-validation edit-form">
+            <div class="mb-3 input-group-custom">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" id="title" name="title" class="form-control" value="<%=songDetails.title%>" required>
+                <div class="invalid-feedback">Add a title</div>
+            </div>
 
-        <div>
-        <label for="description">Description</label>
-        <input type="text" id="description" name="description" value="<%=songDetails.description%>" required>
-        <div class="invalid-feedback">Add a description</div>
-        <div class="valid-feedback">Looks good!</div>
-        </div>
-        
-        <div>
-        <label for="thumbnail">Thumbnail</label>
-        <input type="text" id="thumbnail" name="thumbnail" value="<%=songDetails.thumbnail%>" required>
-        <div class="invalid-feedback">Add a thumbnail</div>
-        <div class="valid-feedback">Looks good!</div>
-        </div>
+            <div class="mb-3 input-group-custom">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" id="description" name="description" class="form-control" value="<%=songDetails.description%>" required>
+                <div class="invalid-feedback">Add a description</div>
+            </div>
 
-        <div>
-        <label for="song">Song</label>
-        <input type="text" id="song" name="song" value="<%=songDetails.song%>" required>
-        <div class="invalid-feedback">Add a song</div>
-        <div class="valid-feedback">Looks good!</div>
-        </div>
+            <div class="mb-3 input-group-custom">
+                <label for="thumbnail" class="form-label">Thumbnail URL</label>
+                <input type="text" id="thumbnail" name="thumbnail" class="form-control" value="<%=songDetails.thumbnail%>" required>
+                <div class="invalid-feedback">Add a thumbnail</div>
+            </div>
 
-        <button>Edit</button>
-    </form>
+            <div class="mb-4 input-group-custom">
+                <label for="song" class="form-label">Song URL</label>
+                <input type="text" id="song" name="song" class="form-control" value="<%=songDetails.song%>" required>
+                <div class="invalid-feedback">Add a song</div>
+            </div>
+
+            <button type="submit" class="btn btn-dark btn-block btn-lg">Save Changes</button>
+        </form>
+    </div>
+</div>

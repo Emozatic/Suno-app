@@ -1,3 +1,20 @@
-<%- layouts("/layouts/boilerplate") %>
-    <h1>Something went wrong!</h1>
-    <p><%= err.message %></p>
+<% layout("/layouts/boilerplate") %>
+<div class="page-shell">
+  <div class="edit-card error-card">
+    <div class="music-head">
+      <div class="music-title">
+        <h1>Something went wrong!</h1>
+        <p>We hit a glitch in the beat. Try again or go back home.</p>
+      </div>
+      <div class="music-animation" aria-hidden="true">
+        <span class="note note-1"></span>
+        <span class="note note-2"></span>
+        <span class="note note-3"></span>
+      </div>
+    </div>
+    <div class="edit-form error-message">
+      <p class="error-text"><%= err.message %></p>
+      <a href="/" class="btn btn-dark btn-lg">Back to Home</a>
+    </div>
+  </div>
+</div>

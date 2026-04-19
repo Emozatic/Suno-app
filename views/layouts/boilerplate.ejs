@@ -17,28 +17,85 @@
     
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-(() => {
-  'use strict'
+      (() => {
+        'use strict'
 
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  const forms = document.querySelectorAll('.needs-validation')
+        const forms = document.querySelectorAll('.needs-validation')
+        const body = document.body
 
-  // Loop over them and prevent submission
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
+        function animateSubmit(form) {
+          const burst = document.createElement('div')
+          burst.className = 'submit-burst'
+          const offsets = [
+            { x: -20, y: -70 },
+            { x: 18, y: -90 },
+            { x: 40, y: -65 },
+            { x: -34, y: -50 },
+            { x: 52, y: -88 },
+            { x: 24, y: -120 },
+            { x: -10, y: -100 },
+            { x: 68, y: -55 }
+          ]
 
-      form.classList.add('was-validated')
-    }, false)
-  })
-})()
+          offsets.forEach((offset, index) => {
+            const note = document.createElement('span')
+            note.className = `burst-note burst-note-${index + 1}`
+            note.style.setProperty('--dx', `${offset.x}px`)
+            note.style.setProperty('--dy', `${offset.y}px`)
+            burst.appendChild(note)
+          })
+
+          form.appendChild(burst)
+          requestAnimationFrame(() => burst.classList.add('animate'))
+          setTimeout(() => burst.remove(), 1200)
+        }
+
+        function startPageTransition() {
+          body.classList.remove('page-exit')
+          body.classList.add('page-enter')
+        }
+
+        function setupPageLinks() {
+          const links = Array.from(document.querySelectorAll('a[href]'))
+            .filter(link => {
+              const url = new URL(link.href, window.location.origin)
+              return url.origin === window.location.origin && !link.target && !link.href.startsWith('#')
+            })
+
+          links.forEach(link => {
+            link.addEventListener('click', event => {
+              event.preventDefault()
+              body.classList.add('page-exit')
+              setTimeout(() => window.location.href = link.href, 240)
+            })
+          })
+        }
+
+        function initValidation() {
+          Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+              if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+                form.classList.add('was-validated')
+                return
+              }
+
+              event.preventDefault()
+              form.classList.add('was-validated')
+              animateSubmit(form)
+              setTimeout(() => form.submit(), 350)
+            }, false)
+          })
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+          startPageTransition()
+          setupPageLinks()
+          initValidation()
+        })
+      })()
     </script>
 </body>
 </html>
