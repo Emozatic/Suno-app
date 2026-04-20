@@ -8,6 +8,7 @@ const SongListing= require("./model/song");
 const ExpressError= require("./ExpressError");
 const {songSchema}= require("./schema");
 const session= require("express-session");
+const flash= require("connect-flash");
 
 
 //db connect
@@ -61,7 +62,14 @@ function wrapAsync (fn){
 }
 
 
+//flash
+app.use(flash());
 
+app.use((req,res,next)=>{
+    res.locals.successMsg= req.flash("success");
+    res.locals.errorMsg= req.flash("error");
+    next();
+})
 
 //index.route
 app.get("/home",wrapAsync(async(req,res)=>{
@@ -80,6 +88,7 @@ app.post("/home",validateSong,wrapAsync(async(req,res)=>{
     let newData=req.body;
     let newSongListing = new SongListing(newData);
     await newSongListing.save()
+    req.flash("success","new Song uploaded");
     res.redirect("/home");
 }))
 
@@ -101,6 +110,7 @@ app.get("/show/:id/edit",wrapAsync(async (req,res)=>{
 app.put("/show/:id",validateSong,wrapAsync(async(req,res)=>{
     let {id}= req.params;
     await SongListing.findByIdAndUpdate(id,{...req.body});
+    req.flash("success","Song's Details edit successfully");
     res.redirect(`/show/${id}`);
 }))
 
@@ -108,6 +118,7 @@ app.put("/show/:id",validateSong,wrapAsync(async(req,res)=>{
 app.delete("/show/:id",wrapAsync(async(req,res)=>{
     let {id}= req.params;
     await SongListing.findByIdAndDelete(id);
+    req.flash("success","Track Deleted successfully");
     res.redirect("/home");
 }));
 
