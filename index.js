@@ -9,6 +9,9 @@ const ExpressError= require("./ExpressError");
 const {songSchema}= require("./schema");
 const session= require("express-session");
 const flash= require("connect-flash");
+const passport= require("passport");
+const LocalStrategy= require("passport-local");
+const User= require("./model/user");
 
 
 //db connect
@@ -42,6 +45,13 @@ const sessionOptions={
 }
 
 app.use(session(sessionOptions));
+
+//passport config
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //joi middleware
 const validateSong= (req,res,next)=>{
@@ -121,6 +131,41 @@ app.delete("/show/:id",wrapAsync(async(req,res)=>{
     req.flash("success","Track Deleted successfully");
     res.redirect("/home");
 }));
+
+//register route
+app.get("/signup",(req,res)=>{
+    res.render("signup.ejs");
+})
+
+app.post("/signup",wrapAsync(async(req,res)=>{
+    try{
+        let{email,username,password}= req.body;
+    const newUser= new User({email, username});
+    const registeredUser= await User.register(newUser,password);
+    console.log(registeredUser);
+    req.flash("success","New Journey begins");
+    res.redirect("/home");
+    }catch(err){
+        req.flash("error",err.message);
+        res.redirect("/signup");
+    }
+}))
+
+//login route
+app.get("/login",(req,res)=>{
+    res.render("login.ejs");
+})
+
+//post login route
+app.post("/login",passport.authenticate("local",{
+    failureFlash:true,
+    failureRedirect:"/login",
+}),wrapAsync(async(req,res)=>{
+    req.flash("success","Welcome Back");
+    res.redirect("/home");
+}))
+    
+
 
 
 //error handling middleware
