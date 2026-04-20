@@ -7,6 +7,7 @@ const ejsMate= require("ejs-mate");
 const SongListing= require("./model/song");
 const ExpressError= require("./ExpressError");
 const {songSchema}= require("./schema");
+const session= require("express-session");
 
 
 //db connect
@@ -27,6 +28,19 @@ app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
+
+const sessionOptions={
+    secret:"superSecret",
+    resave:false,
+    saveUninitialized:true,
+    cookies:{
+        maxAge:7*25*60*60*1000,
+        httpOnly:true,
+        secure:true
+    }
+}
+
+app.use(session(sessionOptions));
 
 //joi middleware
 const validateSong= (req,res,next)=>{
