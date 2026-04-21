@@ -14,6 +14,7 @@ const LocalStrategy= require("passport-local");
 const User= require("./model/user");
 const {isloggedIn}= require("./middleware");
 const {saveRedirectUrl}= require("./middleware");
+const {isOwner}=require("./middleware");
 
 //db connect
 async function main(){
@@ -113,7 +114,7 @@ app.get("/show/:id",wrapAsync(async(req,res)=>{
 }))
 
 //render edit form
-app.get("/show/:id/edit",isloggedIn,wrapAsync(async (req,res)=>{
+app.get("/show/:id/edit",isloggedIn,isOwner,wrapAsync(async (req,res)=>{
     let{id}=req.params;
     let songDetails= await SongListing.findById(id);
     res.render("edit.ejs",{songDetails});
