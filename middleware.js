@@ -19,13 +19,10 @@ module.exports.saveRedirectUrl=(req,res,next)=>{
 
 //checking isOwner or not
 module.exports.isOwner= async(req,res,next)=>{
-    if(!req.isAuthenticated()){
-        req.flash("error","You must be logged In")
-        return res.redirect("/login");
-    }
     let {id}= req.params;
     let songListing= await SongListing.findById(id);
-    if(!songListing.owner.equals(req.user._id)){
+    console.log(res.locals.currUser._id);
+    if(!songListing.owner.equals(res.locals.currUser._id)){
         req.flash("error","You don't have permission to do that");
         return res.redirect("/home");
     }

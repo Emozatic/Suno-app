@@ -129,7 +129,7 @@ app.put("/show/:id",isloggedIn,validateSong,wrapAsync(async(req,res)=>{
 }))
 
 //delete route
-app.delete("/show/:id",isloggedIn,wrapAsync(async(req,res)=>{
+app.delete("/show/:id",isloggedIn,isOwner,wrapAsync(async(req,res)=>{
     let {id}= req.params;
     await SongListing.findByIdAndDelete(id);
     req.flash("success","Track Deleted successfully");
