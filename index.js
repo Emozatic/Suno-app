@@ -99,6 +99,7 @@ app.get("/new",isloggedIn,wrapAsync(async(req,res)=>{
 app.post("/home",isloggedIn,validateSong,wrapAsync(async(req,res)=>{
     let newData=req.body;
     let newSongListing = new SongListing(newData);
+    newSongListing.owner= req.user._id;
     await newSongListing.save()
     req.flash("success","new Song uploaded");
     res.redirect("/home");

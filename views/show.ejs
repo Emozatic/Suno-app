@@ -4,8 +4,10 @@
     <p><%=songDetails.title%></p>
     <p><%=songDetails.description%></p>
     <audio src="<%=songDetails.song%>" controls></audio>
+    <%if(currUser && currUser._id.equals(songDetails.owner)){%>
     <form action="/show/<%=songDetails._id%>/edit" method="GET">
     <button>Edit</button>
     </form>
     <form action="/show/<%=songDetails._id%>?_method=DELETE" method="POST">
         <button>DELETE</button></form>
+        <%}%>
