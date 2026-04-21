@@ -13,6 +13,7 @@ const passport= require("passport");
 const LocalStrategy= require("passport-local");
 const User= require("./model/user");
 const {isloggedIn}= require("./middleware");
+const {saveRedirectUrl}= require("./middleware");
 
 //db connect
 async function main(){
@@ -158,17 +159,18 @@ app.post("/signup",wrapAsync(async(req,res)=>{
 }))
 
 //login route
-app.get("/login",(req,res)=>{
+app.get("/login",saveRedirectUrl,(req,res)=>{
     res.render("login.ejs");
 })
 
 //post login route
-app.post("/login",passport.authenticate("local",{
+app.post("/login",saveRedirectUrl,passport.authenticate("local",{
     failureFlash:true,
     failureRedirect:"/login",
 }),wrapAsync(async(req,res)=>{
     req.flash("success","Welcome Back");
-    res.redirect("/home");
+    let redirectUrl= res.locals.redirectUrl || "/home";
+    res.redirect(redirectUrl);
 }))
     
 //logout route
