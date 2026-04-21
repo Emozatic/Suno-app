@@ -78,6 +78,7 @@ app.use(flash());
 app.use((req,res,next)=>{
     res.locals.successMsg= req.flash("success");
     res.locals.errorMsg= req.flash("error");
+    res.locals.currUser= req.user;
     next();
 })
 
@@ -143,9 +144,14 @@ app.post("/signup",wrapAsync(async(req,res)=>{
     const newUser= new User({email, username});
     const registeredUser= await User.register(newUser,password);
     console.log(registeredUser);
+    req.login(registeredUser,(err)=>{
+        if(err){
+            req.flash("error", "Login failed after registration");
+            return res.redirect("/signup");
+        }
     req.flash("success","New Journey begins");
     res.redirect("/home");
-    }catch(err){
+    })}catch(err){
         req.flash("error",err.message);
         res.redirect("/signup");
     }
@@ -165,8 +171,16 @@ app.post("/login",passport.authenticate("local",{
     res.redirect("/home");
 }))
     
-
-
+//logout route
+app.get("/logout",(req,res)=>{
+    req.logout((err)=>{
+        if(err){
+            return next(err);
+        }
+        req.flash("success","You have been logged out");
+        res.redirect("/login");
+    });
+});
 
 //error handling middleware
 app.use((err,req,res,next)=>{

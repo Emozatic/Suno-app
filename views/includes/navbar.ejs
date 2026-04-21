@@ -8,6 +8,7 @@
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" href="/home">Home</a>
         <a class="nav-link" href="/new">Upload Song</a>
+        <%if(!currUser){%>
         <form action="/signup">
           <button type="submit" class="btn btn-outline-primary">
             Sign Up
@@ -18,6 +19,14 @@
             Login
           </button>
         </form>
+        <%}%>
+        <%if(currUser){%>
+        <form action="/logout" method="GET">
+          <button type="submit" class="btn btn-outline-primary">
+            Logout
+          </button>
+        </form>
+        <%}%>
 
       </div>
     </div>
