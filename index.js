@@ -12,7 +12,7 @@ const flash= require("connect-flash");
 const passport= require("passport");
 const LocalStrategy= require("passport-local");
 const User= require("./model/user");
-
+const {isloggedIn}= require("./middleware");
 
 //db connect
 async function main(){
@@ -89,12 +89,12 @@ app.get("/home",wrapAsync(async(req,res)=>{
 }))
 
 //render new form
-app.get("/new",wrapAsync(async(req,res)=>{
+app.get("/new",isloggedIn,wrapAsync(async(req,res)=>{
     res.render("new.ejs");
 }))
 
 //post new form
-app.post("/home",validateSong,wrapAsync(async(req,res)=>{
+app.post("/home",isloggedIn,validateSong,wrapAsync(async(req,res)=>{
     let newData=req.body;
     let newSongListing = new SongListing(newData);
     await newSongListing.save()
@@ -110,14 +110,14 @@ app.get("/show/:id",wrapAsync(async(req,res)=>{
 }))
 
 //render edit form
-app.get("/show/:id/edit",wrapAsync(async (req,res)=>{
+app.get("/show/:id/edit",isloggedIn,wrapAsync(async (req,res)=>{
     let{id}=req.params;
     let songDetails= await SongListing.findById(id);
     res.render("edit.ejs",{songDetails});
 }))
 
 //post edit form
-app.put("/show/:id",validateSong,wrapAsync(async(req,res)=>{
+app.put("/show/:id",isloggedIn,validateSong,wrapAsync(async(req,res)=>{
     let {id}= req.params;
     await SongListing.findByIdAndUpdate(id,{...req.body});
     req.flash("success","Song's Details edit successfully");
@@ -125,7 +125,7 @@ app.put("/show/:id",validateSong,wrapAsync(async(req,res)=>{
 }))
 
 //delete route
-app.delete("/show/:id",wrapAsync(async(req,res)=>{
+app.delete("/show/:id",isloggedIn,wrapAsync(async(req,res)=>{
     let {id}= req.params;
     await SongListing.findByIdAndDelete(id);
     req.flash("success","Track Deleted successfully");
