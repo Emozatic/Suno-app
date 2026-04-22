@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express= require("express");
 const app= express();
 const mongoose= require("mongoose");
@@ -16,7 +17,10 @@ const {isloggedIn}= require("./middleware");
 const {saveRedirectUrl}= require("./middleware");
 const {isOwner}=require("./middleware");
 const songController= require("./controller/songs")
-
+const multer= require("multer");
+//const upload= multer({dest:"/uploads"})
+const {cloudinary,storage}= require("./config")
+const upload= multer({storage});
 //db connect
 async function main(){
     await mongoose.connect("mongodb://127.0.0.1:27017/suno2");
@@ -92,7 +96,7 @@ app.get("/home",wrapAsync(songController.home))
 app.get("/new",isloggedIn,wrapAsync(songController.renderNewForm));
 
 //post new form
-app.post("/home",isloggedIn,validateSong,wrapAsync(songController.postNewForm));
+app.post("/home",isloggedIn,validateSong,upload.fields([{name:"song", maxCount:1},{name:"thumbnail", maxCount:1}]),wrapAsync(songController.postNewForm));
 
 //show route
 app.get("/show/:id",wrapAsync(songController.show));

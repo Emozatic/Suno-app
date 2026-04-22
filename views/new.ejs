@@ -14,7 +14,7 @@
         <span class="note note-3"></span>
       </div>
     </div>
-    <form action="/home" method="POST" class="needs-validation edit-form" novalidate>
+    <form action="/home" method="POST" class="needs-validation edit-form" novalidate enctype="multipart/form-data">
       <div class="mb-3 input-group-custom">
         <label for="title" class="form-label">Title</label>
         <input type="text" name="title" id="title" class="form-control" placeholder="Enter your title" required>
@@ -29,13 +29,13 @@
       
       <div class="mb-3 input-group-custom">
         <label for="thumbnail" class="form-label">Thumbnail</label>
-        <input type="text" name="thumbnail" id="thumbnail" class="form-control" placeholder="Enter your thumbnail link" required>
+        <input type="file" name="thumbnail" id="thumbnail" class="form-control" placeholder="Enter your thumbnail link" required>
         <div class="invalid-feedback">Please enter a thumbnail link.</div>
       </div>
 
       <div class="mb-4 input-group-custom">
         <label for="song" class="form-label">Song</label>
-        <input type="text" name="song" id="song" class="form-control" placeholder="Enter your song link" required>
+        <input type="file" name="song" id="song" class="form-control" placeholder="Enter your song link" required>
         <div class="invalid-feedback">Please enter a song link.</div>
       </div>
 

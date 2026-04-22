@@ -16,7 +16,7 @@
                 <span class="note note-5"></span>
             </div>
         </div>
-        <form action="/show/<%=songDetails._id%>?_method=PUT" method="POST" novalidate class="needs-validation edit-form">
+        <form action="/show/<%=songDetails._id%>?_method=PUT" method="POST" novalidate class="needs-validation edit-form" enctype="multipart/form-data">
             <div class="mb-3 input-group-custom">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" id="title" name="title" class="form-control" value="<%=songDetails.title%>" required>
@@ -31,7 +31,7 @@
 
             <div class="mb-3 input-group-custom">
                 <label for="thumbnail" class="form-label">Thumbnail URL</label>
-                <input type="text" id="thumbnail" name="thumbnail" class="form-control" value="<%=songDetails.thumbnail%>" required>
+                <input type="file" id="thumbnail" name="thumbnail" class="form-control" value="<%=songDetails.thumbnail%>" required>
                 <div class="invalid-feedback">Add a thumbnail</div>
             </div>
 

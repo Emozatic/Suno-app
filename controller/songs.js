@@ -16,6 +16,15 @@ module.exports.renderNewForm=async(req,res)=>{
 module.exports.postNewForm=async(req,res)=>{
     let newData=req.body;
     let newSongListing = new SongListing(newData);
+    //URLs from cloudinary
+    if(req.files){
+        if(req.files.song){
+            newSongListing.song=req.files.song[0].path;
+        }
+        if(req.files.image){
+            newSongListing.image= req.files.image[0].path;
+        }
+    }
     newSongListing.owner= req.user._id;
     await newSongListing.save()
     req.flash("success","new Song uploaded");

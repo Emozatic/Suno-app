@@ -5,6 +5,5 @@ module.exports.songSchema= Joi.object({
         title:Joi.string().required(),
         description:Joi.string().required(),
         thumbnail:Joi.string().required(),
-        song:Joi.string().required(),
     }).required()
 })
