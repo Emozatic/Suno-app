@@ -15,6 +15,7 @@ const User= require("./model/user");
 const {isloggedIn}= require("./middleware");
 const {saveRedirectUrl}= require("./middleware");
 const {isOwner}=require("./middleware");
+const songController= require("./controller/songs")
 
 //db connect
 async function main(){
@@ -85,56 +86,25 @@ app.use((req,res,next)=>{
 })
 
 //index.route
-app.get("/home",wrapAsync(async(req,res)=>{
-    let songListing= await SongListing.find({});
-    console.log(songListing);
-    res.render("home.ejs",{songListing});
-}))
+app.get("/home",wrapAsync(songController.home))
 
 //render new form
-app.get("/new",isloggedIn,wrapAsync(async(req,res)=>{
-    res.render("new.ejs");
-}))
+app.get("/new",isloggedIn,wrapAsync(songController.renderNewForm));
 
 //post new form
-app.post("/home",isloggedIn,validateSong,wrapAsync(async(req,res)=>{
-    let newData=req.body;
-    let newSongListing = new SongListing(newData);
-    newSongListing.owner= req.user._id;
-    await newSongListing.save()
-    req.flash("success","new Song uploaded");
-    res.redirect("/home");
-}))
+app.post("/home",isloggedIn,validateSong,wrapAsync(songController.postNewForm));
 
 //show route
-app.get("/show/:id",wrapAsync(async(req,res)=>{
-    let{id}=req.params;
-    let songDetails= await SongListing.findById(id);
-    res.render("show.ejs",{songDetails});
-}))
+app.get("/show/:id",wrapAsync(songController.show));
 
 //render edit form
-app.get("/show/:id/edit",isloggedIn,isOwner,wrapAsync(async (req,res)=>{
-    let{id}=req.params;
-    let songDetails= await SongListing.findById(id);
-    res.render("edit.ejs",{songDetails});
-}))
+app.get("/show/:id/edit",isloggedIn,isOwner,wrapAsync(songController.renderEditForm));
 
 //post edit form
-app.put("/show/:id",isloggedIn,validateSong,wrapAsync(async(req,res)=>{
-    let {id}= req.params;
-    await SongListing.findByIdAndUpdate(id,{...req.body});
-    req.flash("success","Song's Details edit successfully");
-    res.redirect(`/show/${id}`);
-}))
+app.put("/show/:id",isloggedIn,validateSong,wrapAsync(songController.postEditFomr));
 
 //delete route
-app.delete("/show/:id",isloggedIn,isOwner,wrapAsync(async(req,res)=>{
-    let {id}= req.params;
-    await SongListing.findByIdAndDelete(id);
-    req.flash("success","Track Deleted successfully");
-    res.redirect("/home");
-}));
+app.delete("/show/:id",isloggedIn,isOwner,wrapAsync(songController.deleteSong));
 
 //register route
 app.get("/signup",(req,res)=>{
