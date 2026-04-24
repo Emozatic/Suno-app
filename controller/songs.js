@@ -3,7 +3,7 @@ const SongListing= require("../model/song.js")
 //home route
 module.exports.home=async(req,res)=>{
     let songListing= await SongListing.find({});
-    console.log(songListing);
+    //console.log(songListing);
     res.render("home.ejs",{songListing});
 };
 
